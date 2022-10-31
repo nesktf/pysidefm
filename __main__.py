@@ -1,18 +1,24 @@
-import fileCls
+import gui
 import os
+import sys
+from PySide2.QtWidgets import(QApplication)
+from fileCls import FileNode
 
 def main():
-    folder = fileCls.Folder(folderPath=os.getcwd(), populate=True)
-    folder.get(".git").populate()
-    folder = fileCls.Folder.genParent(folder)
+    node = FileNode(os.getcwd(), populate=True)
+    parent = FileNode.genParent(node)
+    parent.printChildren()
 
-    folder.printContents()
-    print("")
-    folder.get("proyecto").printContents()
-    print("")
-    folder.get("proyecto").get(".git").printContents()
-    print("")
-    folder.get("proyecto").get(".git").getParentTree().printContents()
+    parent.getChild("proyecto").printChildren()
+
+def initGui():
+    app = QApplication([])
+    app.setApplicationName("PyQTFileBrowser")
+    window = gui.MainWindow(os.getcwd())
+    window.show()
+    sys.exit(app.exec_())
+
 
 if __name__ == "__main__":
-    main()
+    #main()
+    initGui()

@@ -33,6 +33,8 @@ class FileNode():
         try:
             self.__type = magic.from_file(self.__path)
         except PermissionError:
+            # A veces no se puede conseguir el tipo de archivo por falta de permisos
+            # se usa la extensión como tipo de archivo en ese caso
             self.__type = self.__path.split(".")[-1]
 
     # ===== Manejo de nodos ===== #
@@ -44,6 +46,7 @@ class FileNode():
                 try:
                     self.__children.append(FileNode(path = os.path.join(self.__path, i), parent = self))
                 except FileNotFoundError:
+                    # A veces hay symlinks rotos
                     print("Invalid file: "+i)
         else:
             raise NotADirectoryError
@@ -54,7 +57,7 @@ class FileNode():
             print(self.__path)
             print("=> Folders:")
             for i in self.getFolderChildren():
-                print(i.getName())
+                print(i.getName()+"/")
             print("=> Files:")
             for i in self.getFileChildren():
                 print(i.getName())
@@ -81,6 +84,7 @@ class FileNode():
                 if (delFile):
                     print("remove: "+self.__children[i].getPath())
                     if (self.__children[i].isFolder()):
+                        #TODO: Solo borra carpetas vacias, cambiar por shutil para borrar recursivamente
                         os.rmdir(self.__children[i].getPath())
                     else:
                         os.remove(self.__children[i].getPath())
@@ -108,13 +112,14 @@ class FileNode():
         return flag
 
     def isPopulated(self):
+        """Está populado"""
         if (self.__isFolder):
             return (not len(self.__children) == 0)
         else:
             raise NotADirectoryError
 
     # ===== Getters ===== #
-    def __str__(self):
+    def __str__(self): # Para printear nodos
         return self.getName()
 
     def getPath(self):

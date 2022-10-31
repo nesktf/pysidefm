@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
     """Widget ventana principal"""
     # ==== Clases Internas ===== #
     class ButtCont(QFrame):
+        """Widget contenedor para los botones de navegación"""
         def __init__(self, parent):
             super().__init__(parent=parent)
             self.layout = QHBoxLayout(self)
@@ -32,6 +33,7 @@ class MainWindow(QMainWindow):
             self.layout.addWidget(widget)
 
     class PathEditor(QFrame):
+        """Widget para editar la ruta/path"""
         def __init__(self, parent):
             super().__init__(parent=parent)
             self.parent = parent
@@ -60,6 +62,7 @@ class MainWindow(QMainWindow):
             self.setObjectName("PathEditor")
             self.setStyleSheet("QFrame#PathEditor{border: 1px solid black}")
         
+        # ===== Eventos ===== #
         def mousePressEvent(self, QMouseEvent):
             if (QMouseEvent.button() == Qt.LeftButton):
                 self.pathbox.show()

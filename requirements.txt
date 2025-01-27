@@ -1,3 +1,2 @@
 pyside2
 python-magic
-python-magic-win64
